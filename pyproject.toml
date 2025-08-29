@@ -1,0 +1,73 @@
+[project]
+name = "ezonnx"
+version = "0.1.0"
+description = "Example ONNX utility library"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+authors = [{ name = "Your Name", email = "you@example.com" }]
+keywords = ["onnx", "inference"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "numpy==2.3.2",
+    "onnx==1.18.0",
+    "onnxruntime==1.22.1",
+    "opencv-python==4.11.0.86",
+    "huggingface-hub==0.34.4",
+    "pydantic==2.11.7",
+    "scikit-learn==1.7.1",
+    "scipy==1.16.1",
+    "transformers==4.55.3",
+    "matplotlib",
+    "tqdm",
+    "jupyter"
+]
+
+# 開発・テストでのみ使う依存
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "pytest-cov",
+  "ruff",
+  "mypy",
+]
+
+[project.urls]
+Homepage = "https://github.com/ikeboo/ezonnx"
+Repository = "https://github.com/ikeboo/ezonnx"
+Issues = "https://github.com/ikeboo/ezonnx/issues"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# パッケージ自動発見：ezonnx のみ含める
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ezonnx*"]
+exclude = ["tests*", "examples*", "docs*"]
+
+# 型ヒントファイルを wheel に同梱（py.typed を置いた場合）
+[tool.setuptools.package-data]
+ezonnx = ["py.typed"]
+
+# --- 任意：ツール設定（最小例） ---
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+
+
