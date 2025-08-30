@@ -1,9 +1,11 @@
 # EZONNX
 Python library for easily handling state-of-the-art ONNX models.  
 Simple and unified API.
+<div align="center"><img src=./assets/top.jpg  width=800/> </div>
+
 ```python
-# Basic usage
-model = DINOv3('vits16',size=768) # download & create model
+from ezonnx import DinoV3
+model = DinoV3('vits16',size=768) # download & create model
 res = model("image.jpg")          # inference
 print(res.visualized_img)         # get visualized image
 # access outputs
@@ -66,7 +68,7 @@ out_v2 = dinov2(img_path)
 visualize_images(["Original image","DinoV3 PCA","DinoV2 PCA"], 
                 [out_v3.original_img[...,::-1],out_v3.visualized_img, out_v2.visualized_img])
 ```
-<img src=./assets/quickstart.jpg  width=800 /> 
+<img src=./assets/quickstart.jpg  width=800/> 
 
 Find more notebook samples in the [examples/](examples/) folder.
 
