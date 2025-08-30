@@ -1,28 +1,25 @@
 from typing import List, Optional, Dict
 import cv2
 import numpy as np
-from pydantic import BaseModel, ConfigDict
+from .result import Result
 
 from ..ops.postprocess import draw_boxes,COLORS
 
-class ObjectDetectionResult(BaseModel):
+class ObjectDetectionResult(Result):
     """Data class for segmentation results.
 
-    Args:
+    Attributes:
         original_img (np.ndarray): Original input image in shape (H, W, 3). BGR
         boxes (np.ndarray): List of bounding boxes for each object in shape (4,). Default is None.
         classes (np.ndarray): List of class ids corresponding to each box. Default is None.
         scores (np.ndarray): List of confidence scores corresponding to each box. Default
+        visualized_img (np.ndarray): Processed image with bounding boxes drawn.
     """
-    
-    original_img: np.ndarray
     boxes: np.ndarray # (N, 4)
     classes: np.ndarray # (N,)
     scores: np.ndarray # (N,)
-    model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    @property
-    def visualized_img(self) -> np.ndarray:
+    def _visualize(self) -> np.ndarray:
         """Get the processed image with segmentation masks applied.
 
         Returns:
@@ -32,22 +29,23 @@ class ObjectDetectionResult(BaseModel):
                         self.boxes, self.classes,self.scores,
                         draw_labels=True)
     
-class InstanceSegmentationResult(BaseModel):
+class InstanceSegmentationResult(Result):
     """Data class for segmentation results.
 
-    Args:
+    Attributes:
         original_img (np.ndarray): Original input image in shape (H, W, 3). BGR
-        seg_map (np.ndarray): Segmentation map in shape (H, W) with class ids.
+        boxes (np.ndarray): List of bounding boxes for each object in shape (4,). Default is None.
+        classes (np.ndarray): List of class ids corresponding to each box. Default is None.
+        scores (np.ndarray): List of confidence scores corresponding to each box. Default
+        masks (np.ndarray): Array of binary masks in shape (N, H, W) where N is the number of detected objects.
+        visualized_img (np.ndarray): Processed image with masks and bounding boxes drawn.
     """
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-    original_img: np.ndarray
     boxes: np.ndarray # (N, 4)
     classes: np.ndarray # (N,)
     scores: np.ndarray # (N,)
     masks: np.ndarray # (N, H, W)
 
-    @property
-    def visualized_img(self) -> np.ndarray:
+    def _visualize(self) -> np.ndarray:
         """Get the processed image with segmentation masks applied.
 
         Returns:
@@ -74,24 +72,23 @@ class InstanceSegmentationResult(BaseModel):
         return img.astype(np.uint8)
     
 
-class PoseDetectionResult(BaseModel):
+class PoseDetectionResult(Result):
     """Data class for pose detection results.
 
-    Args:
+    Attributes:
         original_img (np.ndarray): Original input image in shape (H, W, 3). BGR
         boxes (np.ndarray): List of bounding boxes for each object in shape (4,). Default is None.
-        classes (np.ndarray): List of class ids corresponding to each box. Default is None.
         scores (np.ndarray): List of confidence scores corresponding to each box. Default
-    """
-    model_config = ConfigDict(arbitrary_types_allowed=True)
-    original_img: np.ndarray
+        kpts (np.ndarray): Array of keypoints in shape (N, num_keypoints, 3) where each keypoint is (x, y, confidence).
+        kpt_scores (np.ndarray): Array of keypoint confidence scores in shape (N,num_keypoints). Default
+        visualized_img (np.ndarray): Processed image with keypoints and skeleton drawn.
+    """ 
     boxes: np.ndarray # (N, 4)
     scores: np.ndarray # (N,)
     kpts: np.ndarray # (N, num_keypoints, 3) arrays
     kpt_scores: np.ndarray #(N, num_keypoints)
 
-    @property
-    def visualized_img(self) -> np.ndarray:
+    def _visualize(self) -> np.ndarray:
         """Visualize the keypoints and skeleton on image.
 
         Returns:
