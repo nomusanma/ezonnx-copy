@@ -49,13 +49,14 @@ class RMBG14(Inferencer):
 
         tensor = self._preprocess(image)
         outputs = self.sess.run(None, {self.sess.get_inputs()[0].name: tensor})
-        processed_image = self._postprocess(outputs)
-        processed_image = cv2.resize(processed_image, 
-                                     (image.shape[1], image.shape[0]),
+        mask = self._postprocess(outputs)
+        mask = cv2.resize(mask, (image.shape[1], image.shape[0]),
                                        interpolation=cv2.INTER_LINEAR)
+        processed_image = (image * mask[..., None]).astype(np.uint8)
 
         return ImageProcessingResult(
             original_img=image,
+            mask=mask,
             processed_img=processed_image
         )
 
