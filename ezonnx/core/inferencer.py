@@ -30,17 +30,26 @@ class Inferencer(ABC):
         if quantize not in quantize_list:
             raise ValueError(f"Invalid quantization type: {quantize}. Must be one of {quantize_list}.")
 
-    def _compile_from_path(self, model_path: str) -> ort.InferenceSession:
+    def _get_providers(self, cuda:bool=True)-> List[str]:
+        providers = ort.get_available_providers()
+        if 'CUDAExecutionProvider' in providers and cuda:
+            return ['CUDAExecutionProvider','CPUExecutionProvider']
+        else:
+            return ['CPUExecutionProvider']
+
+    def _compile_from_path(self, 
+                           model_path: str,
+                           cuda:bool=True) -> ort.InferenceSession:
         return ort.InferenceSession(model_path, 
-                                    providers=['CUDAExecutionProvider',
-                                               'CPUExecutionProvider']
+                                    providers=self._get_providers(cuda)
                                     )
 
     def _download_and_compile(self, 
                               repo_id: str, 
                               filename: str,
                               quantize: Optional[str] = None,
-                              data:bool=False
+                              data:bool=False,
+                              cuda:bool=True
                               ) -> ort.InferenceSession:
         
         if quantize is not None:
@@ -50,11 +59,10 @@ class Inferencer(ABC):
         if data:
             data_filename = filename+"_data"
             _ = get_weights(repo_id, data_filename)
-        
         return ort.InferenceSession(model_path, 
-                                    providers=['CUDAExecutionProvider',
-                                               'CPUExecutionProvider']
+                                    providers=self._get_providers(cuda)
                                     )
+        
 
     @abstractmethod
     def __call__(self,*args,**kwargs)->BaseModel:
