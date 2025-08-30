@@ -10,15 +10,28 @@ class OpticalFlowResult(Result):
         flow (np.ndarray): Optical flow in shape (H, W, 2). dtype=float32
         magnitude (np.ndarray): Magnitude of the optical flow in shape (H, W). dtype=float32
         angle (np.ndarray): Angle of the optical flow in shape (H, W). dtype=float32
-        hsv (np.ndarray): HSV representation of the optical flow in shape (H, W, 3). dtype=uint8
-        flow_rgb (np.ndarray): RGB representation of the optical flow in shape (H, W, 3). dtype=uint8
+        visualized_img (np.ndarray): Processed image with optical flow drawn.(H, W, 3). BGR
     """
     previous_img: np.ndarray
     flow: np.ndarray
-    # magnitude: np.ndarray
-    # angle: np.ndarray
-    # hsv: np.ndarray
-    # flow_rgb: np.ndarray
+
+    @property
+    def magnitude(self) -> np.ndarray:
+        """Get the magnitude map of the optical flow.
+
+        Returns:
+            np.ndarray: Magnitude of the optical flow in shape (H, W). dtype=float32
+        """
+        return np.sqrt(np.sum(np.square(self.flow), axis=2))
+    
+    @property
+    def angle(self) -> np.ndarray:
+        """Get the angle map of the optical flow.
+
+        Returns:
+            np.ndarray: Angle of the optical flow in shape (H, W). dtype=float32
+        """
+        return np.arctan2(self.flow[..., 1], self.flow[..., 0])
 
     def _visualize(self) -> np.ndarray:
         """Return the RGB representation of the optical flow.

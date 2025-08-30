@@ -1,3 +1,7 @@
+import os
+# disable transformers warning
+os.environ["TRANSFORMERS_NO_FRAMEWORK_WARNING"] = "1"
+
 from ezonnx.models.dinov3.dinov3 import DinoV3
 from ezonnx.models.dinov2.dinov2 import DinoV2
 from ezonnx.models.siglip2.siglip2 import Siglip2

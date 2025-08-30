@@ -11,28 +11,46 @@ class RTMDet(Inferencer):
     """RTMDet ONNX model for object detection.
 
     Args:
-        identifier (str): Model identifier, e.g., "s", "m", "l", "x".
-        quantize (Optional[str]): Quantization type, e.g., "q4", "quantized", "fp16". Default is None.
+        identifier (str): Model identifier, e.g., "n-person","m-person","n-hand",
+                                    "tiny-coco","s-coco",
+                                    "m-coco","l-coco","x-coco".
         thresh (float): Confidence threshold for filtering detections. Default is 0.3.
         size (int): Input image size for the model. Default is 640. must be a multiple of 16.
+        iou_thresh (float): IoU threshold for Non-Maximum Suppression (NMS). Default is 0.45.
+        onnx_path (Optional[str]): Path to a local ONNX model file. If provided, the model will be loaded from this path instead of downloading. Default is None.
+    
+    Examples:
+        Usage example:
+        ::
+            from ezonnx import RTMDet
+
+            rtm = RTMDet("s-coco")  # you can choose "n-person","m-person","n-hand",
+                                    "tiny-coco","s-coco",
+                                    "m-coco","l-coco","x-coco"
+            result = rtm("image.jpg")
+
+            print(result.boxes)  # (N, 4) array of bounding boxes
+            print(result.classes)  # (N,) array of class labels
+            print(result.scores)  # (N,) array of confidence scores
+            print(result.visualized_img)  # (H, W, 3) image with
+    
     """
 
     def __init__(self,
                  identifier=None,
-                 quantize=None,
                  thresh:float=0.3,
                  iou_thresh:float=0.45,
                  size=640,
                  onnx_path:Optional[str]=None):
         
         if onnx_path is None:
-            self._check_backbone(identifier,["s","m","l","x"])
-            self._check_quantize(quantize,
-                                [None,"q4","quantized","fp16"])
+            self._check_backbone(identifier,["n-person","m-person","n-hand",
+                                             "tiny-coco","s-coco",
+                                             "m-coco","l-coco","x-coco"])
             # Initialize model
-            repo_id = f"onnx-community/dfine_{identifier}_obj365-ONNX"
-            filename = f"onnx/model.onnx"
-            self.sess = self._download_and_compile(repo_id, filename, quantize)
+            repo_id = f"bukuroo/RTMDet-ONNX"
+            filename = f"rtmdet-{identifier}.onnx"
+            self.sess = self._download_and_compile(repo_id, filename)
         else:
             self.sess = self._compile_from_path(onnx_path)
         self.input_name = self.sess.get_inputs()[0].name
