@@ -3,10 +3,11 @@ Python library for easily handling state-of-the-art ONNX models.
 Simple and unified API.
 ```python
 # Basic usage
-model = DINOv3('vits16',size=768) # download & compile
+model = DINOv3('vits16',size=768) # download & create model
 res = model("image.jpg")          # inference
+print(res.visualized_img)         # get visualized image
 # access outputs
-res.class_token, res.patch_tokens, res.pca_img_rgb
+print(res.class_token, res.patch_tokens, res.pca_img_rgb)
 ```
 
 ## 📦 Model Collection
@@ -30,6 +31,8 @@ res.class_token, res.patch_tokens, res.pca_img_rgb
     - RMBG1.4
 - Image inpainting
     - LaMa
+- Optical flow
+    - NeuFlowV2
 ---
 
 ## 🛠️ Setup
