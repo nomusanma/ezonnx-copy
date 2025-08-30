@@ -6,7 +6,7 @@ Simple and unified API.
 model = DINOv3('vits16',size=768) # download & compile
 res = model("image.jpg")          # inference
 # access outputs
-res.class_token, res.patch_tokens, res.pca_image_rgb
+res.class_token, res.patch_tokens, res.pca_img_rgb
 ```
 
 ## 📦 Model Collection
@@ -33,7 +33,7 @@ res.class_token, res.patch_tokens, res.pca_image_rgb
 ---
 
 ## 🛠️ Setup
-
+Recommend to use uv.
 Requires Python 3.12 or later. Dependencies are managed via `pyproject.toml`
 
 ```sh
