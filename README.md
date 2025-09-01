@@ -20,7 +20,7 @@ print(res.class_token, res.patch_tokens)
 ## 📦 Model Collection
 
 - Image classification  
-    - Siglip2 (zero-shot classification)
+    - SigLIP2 (zero-shot classification)
 - Object detection
     - D-FINE
     - RTMDet (Person detection)
@@ -29,9 +29,10 @@ print(res.class_token, res.patch_tokens)
     - YOLO-seg
 - Feature extraction
     - DINOv2, DINOv3
-    - Siglip2
+    - SigLIP2
 - Person pose estimation
     - DWPose (whole body)
+    - RTMPose (17pts and whole body)
 - Depth estimation
     - DepthAnythingV2
 - Background removal
@@ -40,6 +41,8 @@ print(res.class_token, res.patch_tokens)
     - LaMa
 - Optical flow
     - NeuFlowV2
+- Super resolution
+    - Real-ESRGAN
 ---
 
 ## 🛠️ Setup

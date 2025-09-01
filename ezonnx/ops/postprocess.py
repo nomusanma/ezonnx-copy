@@ -69,7 +69,8 @@ def draw_boxes(image: np.ndarray,
                classes: np.ndarray,
                scores: np.ndarray,
                text_color: tuple = (255, 255, 255),
-               draw_labels: bool = True
+               draw_labels: bool = True,
+                line_width: int = 2
                ) -> np.ndarray:
     """Draw bounding boxes on the image.
 
@@ -89,7 +90,7 @@ def draw_boxes(image: np.ndarray,
     for i, box in enumerate(boxes):
         x1, y1, x2, y2 = box.astype(int)
         box_color = COLORS[classes[i] % len(COLORS)]
-        cv2.rectangle(box_image, (x1, y1), (x2, y2), box_color, thickness=2)
+        cv2.rectangle(box_image, (x1, y1), (x2, y2), box_color, thickness=line_width)
         if draw_labels:
             label = f"{classes[i]}: {scores[i]:.2f}"
             (text_width, text_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)

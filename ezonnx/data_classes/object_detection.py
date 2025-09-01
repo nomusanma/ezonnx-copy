@@ -87,6 +87,7 @@ class PoseDetectionResult(Result):
     scores: np.ndarray # (N,)
     kpts: np.ndarray # (N, num_keypoints, 3) arrays
     kpt_scores: np.ndarray #(N, num_keypoints)
+    kpt_thresh: float
 
     def _visualize(self) -> np.ndarray:
         """Visualize the keypoints and skeleton on image.
@@ -97,7 +98,8 @@ class PoseDetectionResult(Result):
         img = self.original_img.copy()
         keypoints = self.kpts
         scores = self.kpt_scores
-        thr = 0.1
+        boxes = self.boxes
+        thr = self.kpt_thresh
         # default color
         n_keypoints = keypoints.shape[-2]
         if n_keypoints==17:
@@ -143,20 +145,22 @@ class PoseDetectionResult(Result):
         ][:n_keypoints]
 
         # draw keypoints and skeleton
-        for kpts, score in zip(keypoints, scores):
-            # 関節の信頼度の最大が0.5以下なら誤検出として表示しない
-            if max(score)>0.5:
-                for kpt, color in zip(kpts, point_color):
-                    cv2.circle(img, tuple(kpt.astype(np.int32)), 2, palette[color], 2,
-                            cv2.LINE_AA)
+        for kpts, score,box in zip(keypoints, scores, boxes):
+            line_width = int(box[2]-box[0])//100
+            # 関節の信頼度の最大が0.3以下なら誤検出として表示しない
+            if max(score)>0.3:
+                for kpt, color,sc in zip(kpts, point_color,score):
+                    if sc > thr:
+                        cv2.circle(img, tuple(kpt.astype(np.int32)), line_width+2, palette[color], line_width,
+                                cv2.LINE_AA)
                 for (u, v), color in zip(skeleton, link_color):
                     if score[u] > thr and score[v] > thr:
                         cv2.line(img, tuple(kpts[u].astype(np.int32)),
-                                tuple(kpts[v].astype(np.int32)), palette[color], 2,
+                                tuple(kpts[v].astype(np.int32)), palette[color], line_width,
                                 cv2.LINE_AA)
         
         img = draw_boxes(img,
                         self.boxes, np.zeros((len(self.boxes),),dtype=int),self.scores,
-                        draw_labels=True)
+                        draw_labels=True,line_width=line_width)
 
         return img
