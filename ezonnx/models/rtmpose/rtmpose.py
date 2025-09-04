@@ -12,10 +12,11 @@ class RTMPose(Inferencer):
                  identifier:str="m",
                  person_detector:Inferencer=None,
                  kpt_thresh = 0.3,
+                 iou_thresh = 0.45,
                  onnx_path:Optional[str]=None):
         # person detector
         if person_detector is None:
-            self._person_det = RTMDet("m-person")
+            self._person_det = RTMDet("m-person",iou_thresh=iou_thresh)
         else:
             self._person_det = person_detector
         

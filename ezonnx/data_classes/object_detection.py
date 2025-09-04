@@ -146,6 +146,7 @@ class PoseDetectionResult(Result):
 
         # draw keypoints and skeleton
         for kpts, score,box in zip(keypoints, scores, boxes):
+            kpts = kpts[:, :2] #if 3d pose, ignore z
             line_width = int(box[2]-box[0])//100
             # 関節の信頼度の最大が0.3以下なら誤検出として表示しない
             if max(score)>0.3:

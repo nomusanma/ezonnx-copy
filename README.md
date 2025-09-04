@@ -33,6 +33,8 @@ print(res.class_token, res.patch_tokens)
 - Person pose estimation
     - DWPose (whole body)
     - RTMPose (17pts and whole body)
+    - RTMW (whole body)
+    - MotionBERT 3d (3d pose estimation)
 - Depth estimation
     - DepthAnythingV2
 - Background removal

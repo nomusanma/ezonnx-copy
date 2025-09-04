@@ -12,9 +12,13 @@ from ezonnx.models.dfine.dfine_hf import DFINE
 from ezonnx.models.rtmdet.rtmdet import RTMDet
 from ezonnx.models.rtmpose.rtmpose import RTMPose
 from ezonnx.models.dwpose.dwpose import DWPose
+from ezonnx.models.rtmw.rtmw import RTMW
+from ezonnx.models.rtmw3d.rtmw3d import RTMW3D
+from ezonnx.models.motionbert.motionbert import MotionBERT3D
 from ezonnx.models.lama.lama import LaMa
 from ezonnx.models.neuflowv2.neuflowv2 import NeuFlowV2
 from ezonnx.models.realesrgan.realesrgan import RealESRGAN
 from ezonnx.models.yolo.seg import YOLOSeg
 
 from ezonnx.ops.visualize import visualize_images
+from ezonnx.ops.visualize import show_3d_poses
