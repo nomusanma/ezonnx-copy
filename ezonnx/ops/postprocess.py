@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
-from typing import Dict, Optional, Union, List
+from typing import Dict, Optional, Union, List, Tuple
+from scipy.signal import savgol_filter
 
 rng = np.random.default_rng(42)
 COLORS = rng.uniform(0, 255, size=(100, 3))
@@ -135,3 +136,39 @@ def xywh2xyxy(box: np.ndarray) -> np.ndarray:
     box_xyxy[..., 2] = box[..., 0] + box[..., 2] / 2
     box_xyxy[..., 3] = box[..., 1] + box[..., 3] / 2
     return box_xyxy
+
+def apply_savgol_filter_to_skeleton(skeleton_data, window_length=5, polyorder=2):
+    """
+    時系列の2次元骨格データにSavitzky-Golayフィルターを適用する。
+    
+    Parameters:
+    - skeleton_data: np.ndarray
+        形状 (N, 17, 2) の時系列骨格データ
+        N: フレーム数（時間軸）
+        17: 関節の数
+        2: [x, y] 座標
+    - window_length: int
+        フィルタのウィンドウサイズ（奇数である必要があります）
+    - polyorder: int
+        フィルタに使用される多項式の次数
+    
+    Returns:
+    - filtered_data: np.ndarray
+        Savitzky-Golayフィルターが適用された時系列データ
+    """
+    # 骨格データの形状を確認
+    N, num_joints, num_coords = skeleton_data.shape
+    assert num_joints == 17 and num_coords == 2, "入力データは形状 (N, 17, 2) である必要があります"
+    
+    # フィルタを適用するための出力配列を作成
+    filtered_data = np.zeros_like(skeleton_data)
+    
+    # 各関節（17個）ごとに、x, y座標それぞれにSavitzky-Golayフィルターを適用
+    for joint in range(num_joints):
+        for coord in range(num_coords):
+            # 各座標軸（xまたはy）にSavitzky-Golayフィルターを適用
+            filtered_data[:, joint, coord] = savgol_filter(skeleton_data[:, joint, coord], 
+                                                           window_length=window_length, 
+                                                           polyorder=polyorder)
+    
+    return filtered_data
