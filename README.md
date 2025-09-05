@@ -18,7 +18,8 @@ print(res.class_token, res.patch_tokens)
 ```
 
 ## 📦 Model Collection
-
+- OCR
+    - PPOCRv5
 - Image classification  
     - SigLIP2 (zero-shot classification)
 - Object detection

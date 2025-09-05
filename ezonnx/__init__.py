@@ -19,6 +19,7 @@ from ezonnx.models.lama.lama import LaMa
 from ezonnx.models.neuflowv2.neuflowv2 import NeuFlowV2
 from ezonnx.models.realesrgan.realesrgan import RealESRGAN
 from ezonnx.models.yolo.seg import YOLOSeg
+from ezonnx.models.ppocr.ppocr import PPOCR
 
 from ezonnx.ops.visualize import visualize_images
 from ezonnx.ops.visualize import show_3d_poses
