@@ -20,6 +20,9 @@ from ezonnx.models.neuflowv2.neuflowv2 import NeuFlowV2
 from ezonnx.models.realesrgan.realesrgan import RealESRGAN
 from ezonnx.models.yolo.seg import YOLOSeg
 from ezonnx.models.ppocr.ppocr import PPOCR
+from ezonnx.models.alikedlightglue.alikedlightglue import ALIKEDLightGlue
+from ezonnx.models.alikedlightglue.alikedlightglue import ALIKED
+from ezonnx.models.lightglue.lightglue import LightGlue
 
 from ezonnx.ops.visualize import visualize_images
 from ezonnx.ops.visualize import show_3d_poses
