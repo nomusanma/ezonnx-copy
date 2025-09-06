@@ -1,5 +1,5 @@
 # EZONNX
-Python library for easily handling state-of-the-art ONNX models.  
+
 
 <div align="center"><img src=./assets/top.jpg  width=800/> </div>
 <br>
@@ -12,7 +12,7 @@ from ezonnx import DinoV3
 model = DinoV3('vits16',size=768) # download & create model
 res = model("image.jpg")          # inference
 
-# get outputs
+# Access output data
 print(res.visualized_img)         # visualized image
 print(res.class_token, res.patch_tokens)
 ```
@@ -46,6 +46,8 @@ print(res.class_token, res.patch_tokens)
     - NeuFlowV2
 - Super resolution
     - Real-ESRGAN
+- Image matching
+    - ALIKED LightGlue
 ---
 
 ## 🛠️ Setup

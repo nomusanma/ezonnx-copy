@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 from typing import Dict, Optional, Union, List, Tuple
 from scipy.signal import savgol_filter
 
@@ -172,3 +173,39 @@ def apply_savgol_filter_to_skeleton(skeleton_data, window_length=5, polyorder=2)
                                                            polyorder=polyorder)
     
     return filtered_data
+
+def draw_kpts(image: np.ndarray,
+              kpts: np.ndarray,
+              scores: Optional[np.ndarray] = None,
+              kpt_thresh: Optional[float] = None,
+              radius: int = -1,
+              ) -> np.ndarray:
+    """Draw keypoints on the image.
+
+    Args:
+        image (np.ndarray): Original image in shape (H, W, 3).BGR
+        kpts (np.ndarray): Array of keypoints in shape (N, 2) with (x, y).
+        scores (Optional[np.ndarray]): Array of confidence scores corresponding to each keypoint in shape (N,). Default is None.
+        kpt_thresh (Optional[float]): Threshold to filter keypoints based on scores. Default is None.
+        color_map (str): Color map for the keypoints. Default is 'jet'.
+        radius (int): Radius of the keypoint circles. Default is -1 (auto).
+    
+    Returns:
+        np.ndarray: BGR Image with the keypoints drawn on it.
+    """
+    kpt_image = image.copy()
+
+    if kpt_image.ndim == 2:
+        kpt_image = cv2.cvtColor(kpt_image, cv2.COLOR_GRAY2BGR)
+
+    scores = scores if scores is not None else np.ones((kpts.shape[0],), dtype=np.float32)
+    # radius is auto-calculated if set to -1
+    radius = radius if radius > 0 else max(1, min(image.shape[0], image.shape[1]) // 100)
+    for i, (kpt,score) in enumerate(zip(kpts,scores)):
+        if kpt_thresh is not None and (scores is not None and scores[i] < kpt_thresh):
+            continue
+        kpt_color = (0,int(score*255),int((1-score)*255)) # BGR
+        x, y = int(kpt[0]), int(kpt[1])
+        cv2.circle(kpt_image, (x, y), radius, kpt_color, thickness=-1)
+    return kpt_image
+    

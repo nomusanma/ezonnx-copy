@@ -2,7 +2,8 @@ from typing import List,Optional,Union
 import numpy as np
 import matplotlib.pyplot as plt
 def visualize_images(titles:Union[List[str],str], 
-                     images:Union[List[np.ndarray],np.ndarray]):
+                     images:Union[List[np.ndarray],np.ndarray],
+                     col_size:int=8)->None:
     """Visualize multiple images in a single row.
 
     Args:
@@ -14,7 +15,9 @@ def visualize_images(titles:Union[List[str],str],
     if isinstance(images, np.ndarray):
         images = [images]
     cols = len(images)
-    fig, axes = plt.subplots(1, cols, figsize=(5 * cols, 5))
+    if cols==1 and col_size<12:
+        col_size=12
+    fig, axes = plt.subplots(1, cols, figsize=(col_size * cols, col_size))
     if cols == 1:
         axes = [axes]
     
