@@ -1,7 +1,7 @@
 # EZONNX
 
 
-<div align="center"><img src=./assets/top.jpg  width=800/> </div>
+<div align="center"><img src=./assets/top.jpg  width=640/> </div>
 <br>
 
 🤗 **Simple and unified API**  
