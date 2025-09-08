@@ -5,6 +5,14 @@ from typing import List
 from .result import Result
 
 class BoxedResult(BaseModel):
+    """Data class for a single OCR result with bounding box.
+
+    Args:
+        box (np.ndarray): Bounding box corner coordinates in shape (4, 2).
+        img (np.ndarray): Cropped image of the detected text region.
+        text (str): Recognized text.
+        score (float): Confidence score of the recognized text.
+    """
     box: np.ndarray
     img: np.ndarray
     text: str
@@ -53,4 +61,3 @@ class OCRResult(Result):
                         cv2.FONT_HERSHEY_SIMPLEX, font_scale, (45,45,45), 2)
 
         return img
-

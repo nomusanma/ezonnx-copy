@@ -12,9 +12,8 @@ from ...ops.preprocess import standard_preprocess, image_from_path
 class PPOCR(Inferencer):
     def __init__(self,
                  identifier:str="v5-server",
-                 person_detector:Inferencer=None,
                  box_thresh=0.6, 
-                 unclip_ratio=1.6,
+                 unclip_ratio=1.3,
                  onnx_path:Optional[str]=None):
 
         # build
