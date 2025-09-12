@@ -23,6 +23,7 @@ print(res.class_token, res.patch_tokens)
 - Image classification  
     - SigLIP2 (zero-shot classification)
 - Object detection
+    - RF-DETR
     - D-FINE
     - RTMDet (Person detection)
 - Segmentation
