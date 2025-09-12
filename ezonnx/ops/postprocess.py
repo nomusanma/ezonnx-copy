@@ -72,7 +72,7 @@ def draw_boxes(image: np.ndarray,
                scores: np.ndarray,
                text_color: tuple = (255, 255, 255),
                draw_labels: bool = True,
-                line_width: int = 2
+               line_width: Optional[int] = None
                ) -> np.ndarray:
     """Draw bounding boxes on the image.
 
@@ -89,6 +89,7 @@ def draw_boxes(image: np.ndarray,
         np.ndarray: Image with the bounding boxes drawn on it.
     """
     box_image = image.copy()
+    line_width = max(2, int(min(image.shape[0], image.shape[1]) / 300)) if line_width is None else line_width
     for i, box in enumerate(boxes):
         x1, y1, x2, y2 = box.astype(int)
         box_color = COLORS[classes[i] % len(COLORS)]
@@ -137,6 +138,16 @@ def xywh2xyxy(box: np.ndarray) -> np.ndarray:
     box_xyxy[..., 2] = box[..., 0] + box[..., 2] / 2
     box_xyxy[..., 3] = box[..., 1] + box[..., 3] / 2
     return box_xyxy
+
+def box_cxcywh_to_xyxy_numpy(x):
+    x_c, y_c, w, h = np.split(x, 4, axis=-1)
+    b = np.concatenate([
+        x_c - 0.5 * np.clip(w, a_min=0.0, a_max=None),
+        y_c - 0.5 * np.clip(h, a_min=0.0, a_max=None),
+        x_c + 0.5 * np.clip(w, a_min=0.0, a_max=None),
+        y_c + 0.5 * np.clip(h, a_min=0.0, a_max=None)
+    ], axis=-1)
+    return b
 
 def apply_savgol_filter_to_skeleton(skeleton_data, window_length=5, polyorder=2):
     """

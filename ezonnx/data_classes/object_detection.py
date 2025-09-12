@@ -61,13 +61,8 @@ class InstanceSegmentationResult(Result):
             img = img.astype(np.float32)
             img[mask==1] /= 2
             img[mask==1] += (np.array(COLORS[class_num%20]) / 2)
-
-            label_size, baseline = cv2.getTextSize(label_str, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)
-            cv2.rectangle(img, (x1, y1), (x2, y2), color, 2) 
-            cv2.rectangle(img, (x1, y1), (x1+label_size[0], y1+label_size[1]+baseline),
-                color, -1) #poseモデルの場合color固定
-            cv2.putText(img, label_str, (x1, y1+label_size[1]), cv2.FONT_HERSHEY_SIMPLEX,
-                0.5, (255, 255, 255), 2)
+            
+        img = draw_boxes(img,self.boxes, self.classes,self.scores)
 
         return img.astype(np.uint8)
     
@@ -162,6 +157,6 @@ class PoseDetectionResult(Result):
         
         img = draw_boxes(img,
                         self.boxes, np.zeros((len(self.boxes),),dtype=int),self.scores,
-                        draw_labels=True,line_width=line_width)
+                        draw_labels=True)
 
         return img

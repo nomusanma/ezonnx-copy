@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 def visualize_images(titles:Union[List[str],str], 
                      images:Union[List[np.ndarray],np.ndarray],
-                     col_size:int=8)->None:
+                     height:int=5)->None:
     """Visualize multiple images in a single row.
 
     Args:
@@ -15,9 +15,9 @@ def visualize_images(titles:Union[List[str],str],
     if isinstance(images, np.ndarray):
         images = [images]
     cols = len(images)
-    if cols==1 and col_size<12:
-        col_size=12
-    fig, axes = plt.subplots(1, cols, figsize=(col_size * cols, col_size))
+    xy_aspect = images[0].shape[1] / images[0].shape[0]
+    col_size = height * xy_aspect
+    fig, axes = plt.subplots(1, cols, figsize=(col_size * cols, height))
     if cols == 1:
         axes = [axes]
     
