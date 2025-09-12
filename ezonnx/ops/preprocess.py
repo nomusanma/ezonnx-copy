@@ -1,4 +1,4 @@
-from typing import Tuple, Union
+from typing import Tuple, Union, Optional
 import cv2
 import numpy as np
 
@@ -24,7 +24,7 @@ def image_from_path(image: Union[str, np.ndarray],
     return image
 
 def standard_preprocess(image: np.ndarray, 
-                        size: Tuple[int,int],
+                        size: Optional[Tuple[int,int]]=None,
                         standardize: bool = True,
                         dim_order: str = 'CHW',
                         mean : Tuple[float,float,float] = (0.485, 0.456, 0.406),
@@ -45,7 +45,8 @@ def standard_preprocess(image: np.ndarray,
     # Convert BGR to RGB
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     # Resize to model input size
-    image = cv2.resize(image, size)
+    if size is not None:
+        image = cv2.resize(image, size)
     # Convert to float32 and scale to [0,1]
     image = image.astype(np.float32) / 255.0
     if standardize:
