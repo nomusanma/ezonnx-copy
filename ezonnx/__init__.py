@@ -13,6 +13,7 @@ from ezonnx.models.sam2.sam2 import SAM2, SAM2Encoder, SAM2Decoder
 from ezonnx.models.rfdetr.rfdetr import RFDETR
 from ezonnx.models.dfine.dfine_hf import DFINE
 from ezonnx.models.rtmdet.rtmdet import RTMDet
+from ezonnx.models.yolo.det import YOLO
 from ezonnx.models.yolo.seg import YOLOSeg
 #pose
 from ezonnx.models.rtmpose.rtmpose import RTMPose

@@ -10,11 +10,33 @@ from ...ops.preprocess import (resize_with_aspect_ratio,
 from ...ops.postprocess import nms,xywh2xyxy,sigmoid,COLORS
 
 class YOLOSeg(Inferencer):
+    """YOLO seg model for object detection with ONNX.
+
+    Args:
+        onnx_path (str): Path to a local ONNX model file.
+        conf_thresh (float): Confidence threshold for filtering detections. Default is 0.3.
+        iou_thresh (float): IoU threshold for Non-Maximum Suppression (NMS). Default is 0.45.
+    
+    Examples:
+        Usage
+        ::
+            from ezonnx import YOLOSeg, visualize_images
+            det = YOLOSeg("/path/to/yolo-seg.onnx") # Please use local weight
+            ret = det("images/surf.jpg")
+            visualize_images("Detection Result",ret.visualized_img)
+
+    Please use ONNX weight exported from ultralytics library.
+    Example of exporting to ONNX:
+        ::
+            from ultralytics import YOLO
+            # Load the YOLO11 seg model
+            model = YOLO("yolo11n-seg.pt")
+            # Export the model to ONNX format
+            model.export(format="onnx")  # creates 'yolo11n-seg.onnx'
+    """
     def __init__(self,
-                identifier=None,
                 onnx_path:Optional[str]=None,
-                quantize=None,
-                thresh:float=0.3,
+                conf_thresh:float=0.3,
                 iou_thresh:float=0.45,
                 size=640,
                 ):
@@ -32,7 +54,7 @@ class YOLOSeg(Inferencer):
             self.sess = self._compile_from_path(onnx_path)
         self.input_name = self.sess.get_inputs()[0].name
         self.size = size
-        self.thresh = thresh
+        self.conf_thresh = conf_thresh
         self.iou_thresh = iou_thresh
 
     def __call__(self,image:Union[str, np.ndarray])-> InstanceSegmentationResult:
@@ -82,8 +104,8 @@ class YOLOSeg(Inferencer):
 
         # Filter out object confidence scores below threshold
         scores = np.max(predictions[:, 4:4+num_classes], axis=1)
-        predictions = predictions[scores > self.thresh, :]
-        scores = scores[scores > self.thresh]
+        predictions = predictions[scores > self.conf_thresh, :]
+        scores = scores[scores > self.conf_thresh]
 
         if len(scores) == 0:
             return [], [], [], np.array([])
