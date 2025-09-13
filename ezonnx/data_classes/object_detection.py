@@ -91,6 +91,7 @@ class PoseDetectionResult(Result):
             img (np.ndarray): Visualized image.
         """
         img = self.original_img.copy()
+        line_width = max(2, int(min(img.shape[0], img.shape[1]) / 300))
         keypoints = self.kpts
         scores = self.kpt_scores
         boxes = self.boxes
@@ -142,7 +143,6 @@ class PoseDetectionResult(Result):
         # draw keypoints and skeleton
         for kpts, score,box in zip(keypoints, scores, boxes):
             kpts = kpts[:, :2] #if 3d pose, ignore z
-            line_width = int(box[2]-box[0])//100
             # 関節の信頼度の最大が0.3以下なら誤検出として表示しない
             if max(score)>0.3:
                 for kpt, color,sc in zip(kpts, point_color,score):
@@ -157,6 +157,6 @@ class PoseDetectionResult(Result):
         
         img = draw_boxes(img,
                         self.boxes, np.zeros((len(self.boxes),),dtype=int),self.scores,
-                        draw_labels=True)
+                        draw_labels=False)
 
         return img
