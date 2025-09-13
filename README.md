@@ -54,14 +54,9 @@ print(res.class_token, res.patch_tokens)
 ---
 
 ## 🛠️ Setup
-Recommend to use uv.
-Requires Python 3.12 or later. Dependencies are managed via `pyproject.toml`
-
+Install with pip
 ```sh
-git clone https://github.com/ikeboo/ezonnx.git
-cd ezonnx
-uv init
-uv sync
+pip install git+https://github.com/ikeboo/ezonnx.git
 ```
 
 ---
