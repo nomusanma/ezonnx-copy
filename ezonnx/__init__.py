@@ -20,6 +20,7 @@ from ezonnx.models.rtmpose.rtmpose import RTMPose
 from ezonnx.models.dwpose.dwpose import DWPose
 from ezonnx.models.rtmw.rtmw import RTMW
 from ezonnx.models.rtmw3d.rtmw3d import RTMW3D
+from ezonnx.models.rtmo.rtmo import RTMO
 from ezonnx.models.motionbert.motionbert import MotionBERT3D
 
 from ezonnx.models.lama.lama import LaMa
