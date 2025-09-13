@@ -23,18 +23,20 @@ print(res.class_token, res.patch_tokens)
 - Image classification  
     - SigLIP2 (zero-shot classification)
 - Object detection
+    - YOLOv8, YOLO11
     - RF-DETR
     - D-FINE
     - RTMDet (Person detection)
 - Segmentation
     - SAM2
-    - YOLO-seg
+    - YOLOv8-seg,YOLO11-seg
 - Feature extraction
     - DINOv2, DINOv3
     - SigLIP2
 - Person pose estimation
     - DWPose (whole body)
     - RTMPose (17pts and whole body)
+    - RTMO (multi person pose estimation)
     - RTMW (whole body)
     - MotionBERT 3d (3d pose estimation)
 - Depth estimation
@@ -56,7 +58,7 @@ Recommend to use uv.
 Requires Python 3.12 or later. Dependencies are managed via `pyproject.toml`
 
 ```sh
-git clone https://github.com/yourname/ezonnx.git
+git clone https://github.com/ikeboo/ezonnx.git
 cd ezonnx
 uv init
 uv sync
