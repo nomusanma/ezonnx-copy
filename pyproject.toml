@@ -28,7 +28,9 @@ dependencies = [
     "tqdm",
     "jupyter",
     "shapely",
-    "pyclipper"
+    "pyclipper",
+    "pytest",
+    "pytest-mock"
 ]
 
 # 開発・テストでのみ使う依存
