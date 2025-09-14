@@ -17,6 +17,7 @@ from ezonnx.models.yolo.det import YOLO
 from ezonnx.models.yolo.seg import YOLOSeg
 #pose
 from ezonnx.models.rtmpose.rtmpose import RTMPose
+from ezonnx.models.vitpose.vitpose import ViTPose
 from ezonnx.models.dwpose.dwpose import DWPose
 from ezonnx.models.rtmw.rtmw import RTMW
 from ezonnx.models.rtmw3d.rtmw3d import RTMW3D
