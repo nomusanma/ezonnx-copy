@@ -38,35 +38,6 @@ class RTMW3D(RTMPose):
         self.root_z = [5.14388]
         self.z_range = 2.1744869
 
-    # def estimate_keypoints(self,
-    #                        box:np.ndarray,
-    #                        frame:np.ndarray
-    #                        )-> Tuple[np.ndarray,np.ndarray]:
-    #     """Crop the person area and estimate keypoints.
-        
-    #     Args:
-    #         box (np.ndarray): Bounding box in shape (4,), formatted as
-    #             (left, top, right, bottom)
-    #         frame (np.ndarray): Original image.
-
-    #     Returns:
-    #         tuple:
-    #         - keypoints (np.ndarray): Estimated keypoints in shape (1, n_keypoints, 2).
-    #         - scores (np.ndarray): Model predict scores of each key points.
-    #     """
-    #     frame_cropped = frame[int(box[1]):int(box[3]),int(box[0]):int(box[2]),:]
-    #     # h, w = self.sess.get_inputs()[0].shape[2:]
-    #     # model_input_size = (w, h)
-
-    #     # preprocessing
-    #     input_tensor, center, scale = self._preprocess(frame_cropped, self.input_size_wh)
-    #     outputs = self.sess.run(None, {self.sess.get_inputs()[0].name: input_tensor})
-    #     # postprocessing
-    #     keypoints, scores = self._postprocess(outputs, self.input_size_wh, center, scale)
-    #     # convert coordinates to original
-    #     keypoints[0][:,0]+=int(box[0])
-    #     keypoints[0][:,1]+=int(box[1])
-    #     return keypoints,scores
     
     def _postprocess(self,
                     outputs: List[np.ndarray],
