@@ -77,6 +77,12 @@ class ViTPose(Inferencer):
         det_result:ObjectDetectionResult = self._person_det(image)
         boxes = det_result.boxes
         box_scores = det_result.scores
+        classes = det_result.classes
+        # filter boxes if person detector is not RTMDet
+        if not isinstance(self._person_det,RTMDet):
+            boxes = boxes[classes==1]
+            box_scores = box_scores[classes==1]
+
         if len(boxes)==0:
             kpts = np.empty((0,17,2))
             kpt_scores = np.empty((0,17))

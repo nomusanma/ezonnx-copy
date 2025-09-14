@@ -11,12 +11,8 @@ class RFDETR(Inferencer):
     """RFDETR ONNX model for object detection.
 
     Args:
-        identifier (str): Model identifier, e.g., "n-person","m-person","n-hand",
-                                    "tiny-coco","s-coco",
-                                    "m-coco","l-coco","x-coco".
+        identifier (str): Model identifier, e.g., "n","s","m".
         thresh (float): Confidence threshold for filtering detections. Default is 0.3.
-        size (int): Input image size for the model. Default is 640. must be a multiple of 16.
-        iou_thresh (float): IoU threshold for Non-Maximum Suppression (NMS). Default is 0.45.
         onnx_path (Optional[str]): Path to a local ONNX model file. If provided, the model will be loaded from this path instead of downloading. Default is None.
     
     Examples:
