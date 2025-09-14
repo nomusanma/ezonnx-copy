@@ -11,3 +11,5 @@ wheels/
 .venv
 # output
 _outputs/
+# experimental
+.experiments/

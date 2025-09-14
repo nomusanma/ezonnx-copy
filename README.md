@@ -36,6 +36,7 @@ print(res.class_token, res.patch_tokens)
 - Person pose estimation
     - DWPose (whole body)
     - RTMPose (17pts and whole body)
+    - ViTPose+ (17pt)
     - RTMO (multi person pose estimation)
     - RTMW (whole body)
     - MotionBERT 3d (3d pose estimation)
