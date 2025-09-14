@@ -9,6 +9,7 @@ from ...ops.preprocess import standard_preprocess, image_from_path
 
 class SAM2:
     """SAM2 ONNX model for image segmentation.
+    Model weights are v2.1
 
     Args:
         identifier (str): Model identifier. One of "tiny", "small", "base_plus", "large".
