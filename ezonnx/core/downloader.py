@@ -17,7 +17,7 @@ def get_weights(repo_id: str, filename: str, cache_dir: Optional[Path]= None) ->
     weight_path = hf_hub_download(
         repo_id=repo_id,
         filename=filename,
-        local_dir_use_symlinks=False,
+        # local_dir_use_symlinks=False,
         local_dir=str(cache_dir / repo_id.replace("/", "_")),
     )
     file_mtime = Path(weight_path).stat().st_mtime

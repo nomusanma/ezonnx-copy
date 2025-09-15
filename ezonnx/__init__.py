@@ -1,11 +1,12 @@
 import os
 # disable transformers warning
 os.environ["TRANSFORMERS_NO_FRAMEWORK_WARNING"] = "1"
-
+# image classifier
+from ezonnx.models.imageclassifier.imageclassifier import ImageClassifier
+# feature extractor
 from ezonnx.models.dinov3.dinov3 import DinoV3
 from ezonnx.models.dinov2.dinov2 import DinoV2
 from ezonnx.models.siglip2.siglip2 import Siglip2
-from ezonnx.models.depthanythingv2.depthanythingv2 import DepthAnythingV2
 # mask
 from ezonnx.models.rmbg.rmbg import RMBG14
 from ezonnx.models.sam2.sam2 import SAM2, SAM2Encoder, SAM2Decoder
@@ -24,7 +25,8 @@ from ezonnx.models.rtmw.rtmw import RTMW
 from ezonnx.models.rtmw3d.rtmw3d import RTMW3D
 from ezonnx.models.rtmo.rtmo import RTMO
 from ezonnx.models.motionbert.motionbert import MotionBERT3D
-
+# others
+from ezonnx.models.depthanythingv2.depthanythingv2 import DepthAnythingV2
 from ezonnx.models.lama.lama import LaMa
 from ezonnx.models.neuflowv2.neuflowv2 import NeuFlowV2
 from ezonnx.models.realesrgan.realesrgan import RealESRGAN
@@ -36,3 +38,4 @@ from ezonnx.models.lightglue.lightglue import LightGlue
 
 from ezonnx.ops.visualize import visualize_images
 from ezonnx.ops.visualize import show_3d_poses
+from ezonnx.core.downloader import get_weights
