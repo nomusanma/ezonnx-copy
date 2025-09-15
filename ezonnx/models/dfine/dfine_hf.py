@@ -9,13 +9,13 @@ from ...ops.preprocess import standard_preprocess, image_from_path, resize_with_
 
 
 class DFINE(Inferencer):
-    """DFine ONNX model for object detection.
+    """D-FINE ONNX model for object detection.
 
     Args:
         identifier (str): Model identifier, e.g., "s", "m", "l", "x".
         quantize (Optional[str]): Quantization type, e.g., "q4", "quantized", "fp16". Default is None.
         threshold (float): Confidence threshold for filtering detections. Default is 0.3.
-        size (int): Input image size for the model. Default is 640. must be a multiple of 16.
+        size (int): Input image size for the model. Default is 640. must be a multiple of 32.
     """
 
     def __init__(self,
