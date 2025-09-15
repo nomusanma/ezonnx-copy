@@ -21,6 +21,7 @@ print(res.class_token, res.patch_tokens)
 - OCR
     - PPOCRv5
 - Image classification  
+    - ImageClassifier (ConvNeXt,ViT,EfficientNetV2,CoAtNet and others.)
     - SigLIP2 (zero-shot classification)
 - Object detection
     - YOLOv8, YOLO11
