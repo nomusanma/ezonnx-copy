@@ -28,7 +28,7 @@ print(res.class_token, res.patch_tokens)
     - D-FINE
     - RTMDet (Person detection)
 - Segmentation
-    - SAM2
+    - SAM2.1
     - YOLOv8-seg,YOLO11-seg
 - Feature extraction
     - DINOv2, DINOv3
@@ -44,6 +44,7 @@ print(res.class_token, res.patch_tokens)
     - DepthAnythingV2
 - Background removal
     - RMBG1.4
+    - ORMBG
 - Image inpainting
     - LaMa
 - Optical flow

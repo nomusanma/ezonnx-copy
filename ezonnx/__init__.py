@@ -9,6 +9,7 @@ from ezonnx.models.depthanythingv2.depthanythingv2 import DepthAnythingV2
 # mask
 from ezonnx.models.rmbg.rmbg import RMBG14
 from ezonnx.models.sam2.sam2 import SAM2, SAM2Encoder, SAM2Decoder
+from ezonnx.models.ormbg.ormbg import ORMBG
 #det
 from ezonnx.models.rfdetr.rfdetr import RFDETR
 from ezonnx.models.dfine.dfine_hf import DFINE
