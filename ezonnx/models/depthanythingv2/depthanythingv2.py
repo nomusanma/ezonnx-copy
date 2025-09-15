@@ -17,29 +17,30 @@ class DepthAnythingV2(Inferencer):
     Examples:
         ::
 
-            from dinov3 import DinoV3
-            dino = DinoV3("vits", size=1024)
-            result = dino("image.jpg")
-            print(result.patch_token.shape)  # (N, D) D depends on the model
-            print(result.class_token.shape)  # (1, 1)
-            print(result.pca_image_rgb.shape)  # (H, W, 3)
-            print(result.pca_image_gray.shape)  # (H, W)        
+            from ezonnx import DepthAnythingV2
+            model = DepthAnythingV2("small")
+            result = model("image.jpg")
+            print(result.processed_img)  # depth image (H, W, 3)
+            print(result.map)  #nomalized depth map (H, W)
     """
 
     def __init__(self, 
                  backbone:str, 
                  quantize:Optional[str]=None,
-                 size:int=518
+                 size:int=518,
+                 onnx_path:Optional[str]=None
                  )-> None:
-        
-        self._check_backbone(backbone, 
-                            ["vits16", "small","base","large"])
-        self._check_quantize(quantize, 
-                             [None, "q4", "quantized","fp16"])
+        if onnx_path is None:
+            self._check_backbone(backbone, 
+                                ["small","base","large"])
+            self._check_quantize(quantize, 
+                                [None, "q4", "quantized","fp16"])
 
-        repo_id = f"onnx-community/depth-anything-v2-{backbone}"
-        filename = "onnx/model.onnx"
-        self.sess = self._download_and_compile(repo_id, filename, quantize)
+            repo_id = f"onnx-community/depth-anything-v2-{backbone}"
+            filename = "onnx/model.onnx"
+            self.sess = self._download_and_compile(repo_id, filename, quantize)
+        else:
+            self.sess = self._compile_from_path(onnx_path)
         self.input_name = self.sess.get_inputs()[0].name
         self.size = size
 
@@ -77,7 +78,7 @@ class DepthAnythingV2(Inferencer):
 
         return standard_preprocess(image, (self.size, self.size))
     
-    def _postprocess(self, outputs:List[np.ndarray]) -> np.ndarray:
+    def _postprocess(self, outputs:List[np.ndarray]) -> Tuple[np.ndarray, np.ndarray]:
         """Postprocess the model outputs to extract patch tokens and class tokens.
 
         Args:
