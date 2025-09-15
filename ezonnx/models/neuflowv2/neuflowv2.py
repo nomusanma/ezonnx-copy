@@ -10,12 +10,10 @@ class NeuFlowV2(Inferencer):
 
     Args:
         identifier (str): Model identifier, e.g.,"mixed","sintel","things".
-        cuda (bool): Whether to use CUDA for inference. Default is True.
     """
 
     def __init__(self,
-                 identifier:str="mixed",
-                 cuda:bool=True):
+                 identifier:str="mixed"):
         self._check_backbone(identifier,["mixed","sintel","things"])
         # Initialize model
         repo_id = f"bukuroo/NeuFlowV2-ONNX"

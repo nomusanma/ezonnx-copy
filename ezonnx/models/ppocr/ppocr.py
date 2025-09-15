@@ -10,6 +10,26 @@ from ...data_classes.ocr import BoxedResult,OCRResult
 from ...ops.preprocess import standard_preprocess, image_from_path
 
 class PPOCR(Inferencer):
+    """PPOCR ONNX model for optical character recognition.
+
+    Args:
+        identifier (str): Model identifier, e.g., "v5-server","v5-mobile".
+        box_thresh (float): Confidence threshold for text detection. Default is 0.6.
+        unclip_ratio (float): Unclip ratio for detection box. Default is 1.3.
+        onnx_path (Optional[str]): Path to a local ONNX model file. If provided, the model will be loaded from this path instead of downloading. Default is None.
+    
+    Examples:
+        Usage example:
+        ::
+            from ezonnx import PPOCR
+            model = PPOCR("v5-server")  # you can choose "v5-server","v5-mobile"
+            result = model("image.jpg")
+            for box in result.boxed_results:
+                print(box.box)  # (4,2) array of box coordinates
+                print(box.text)  # recognized text
+                print(box.score)  # confidence score
+            print(result.visualized_img)  # (H, W, 3) image with boxes and text drawn
+    """
     def __init__(self,
                  identifier:str="v5-server",
                  box_thresh=0.6, 

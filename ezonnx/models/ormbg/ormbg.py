@@ -1,42 +1,37 @@
 import cv2
 import numpy as np
 from typing import Union, List, Tuple, Optional
-from ezonnx.core.inferencer import Inferencer
+from ...core.inferencer import Inferencer
 from ...data_classes.image_processing import ImageProcessingResult
-from ...ops.preprocess import standard_preprocess, image_from_path
+from ...ops.preprocess import standard_preprocess, image_from_path,resize_with_aspect_ratio
 
-class DepthAnythingV2(Inferencer):
-    """DepthAnythingV2 ONNX model for monocular depth estimation.
+class ORMBG(Inferencer):
+    """ORMBG ONNX model for person-background removal.
     
     Args:
-        backbone (str): model backbone type, e.g., "vits16", "vits16plus", "vitb16", "vitl16".
         quantize (Optional[str]): Quantization type, e.g., "q4", "quantized". Default is None.
-        size (int): Input image size for the model. Default is 384. must be a multiple of 16.
-        patch (int): Patch size used in the model. Default is 16.
+        onnx_path (Optional[str]): Path to the ONNX model file. If None, the model will be downloaded. Default is None.
 
     Examples:
         ::
 
-            from ezonnx import DepthAnythingV2
-            model = DepthAnythingV2("small")
-            result = model("image.jpg")
-            print(result.processed_img)  # depth image (H, W, 3)
-            print(result.map)  #nomalized depth map (H, W)
+            from ezonnx import ORMBG
+            model = ORMBG()
+            result = model("image.jpg")    
+            print(result.processed_img)  # bg removed image (H, W, 3)
+            print(result.mask)  # mask (H, W)  0 to 1  
     """
 
     def __init__(self, 
-                 backbone:str, 
                  quantize:Optional[str]=None,
-                 size:int=518,
-                 onnx_path:Optional[str]=None
+                 onnx_path:Optional[str]=None,
+                 size:int=1024
                  )-> None:
         if onnx_path is None:
-            self._check_backbone(backbone, 
-                                ["small","base","large"])
             self._check_quantize(quantize, 
                                 [None, "q4", "quantized","fp16"])
 
-            repo_id = f"onnx-community/depth-anything-v2-{backbone}"
+            repo_id = f"onnx-community/ormbg-ONNX"
             filename = "onnx/model.onnx"
             self.sess = self._download_and_compile(repo_id, filename, quantize)
         else:
@@ -54,16 +49,18 @@ class DepthAnythingV2(Inferencer):
             FeatureExtractionResult: Inference result containing class and patch tokens.
         """
         image = image_from_path(image)
-
-        tensor = self._preprocess(image)
+        padded_image, ratio= resize_with_aspect_ratio(image,self.size)
+        tensor = self._preprocess(padded_image)
         outputs = self.sess.run(None, {self.sess.get_inputs()[0].name: tensor})
-        depth,depth_image = self._postprocess(outputs)
-        processed_image = cv2.resize(depth_image, (image.shape[1], image.shape[0]), interpolation=cv2.INTER_LINEAR)
-
+        mask = self._postprocess(outputs)
+        mask = mask[:int(image.shape[0]*ratio), :int(image.shape[1]*ratio)]
+        mask = cv2.resize(mask, (image.shape[1], image.shape[0]),
+                                       interpolation=cv2.INTER_LINEAR)
+        processed_image = (image * mask[..., None]).astype(np.uint8)
         return ImageProcessingResult(
             original_img=image,
             processed_img=processed_image,
-            map=depth
+            mask=mask
         )
 
     def _preprocess(self, image:np.ndarray):
@@ -75,8 +72,8 @@ class DepthAnythingV2(Inferencer):
         Returns:
             np.ndarray: Preprocessed image tensor in shape (1, 3, H, W).
         """
-
-        return standard_preprocess(image, (self.size, self.size))
+        
+        return standard_preprocess(image, standardize=False)
     
     def _postprocess(self, outputs:List[np.ndarray]) -> Tuple[np.ndarray, np.ndarray]:
         """Postprocess the model outputs to extract patch tokens and class tokens.
@@ -85,10 +82,7 @@ class DepthAnythingV2(Inferencer):
             outputs (List[np.ndarray]): Model outputs containing patch tokens and class token.
         
         Returns:
-            Tuple[np.ndarray, np.ndarray]: patch tokens and class token.
+            np.ndarray: Mask array. (H, W) with values 0 to 1.
         """
-        depth = outputs[0][0]
-        # normalize to float 0~1
-        depth = (depth - depth.min()) / (depth.max() - depth.min() + 1e-8)
-        depth_image = (depth * 255).astype("uint8")
-        return depth, depth_image
+        mask = outputs[0][0][0]
+        return mask

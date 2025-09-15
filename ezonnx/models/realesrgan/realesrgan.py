@@ -12,7 +12,7 @@ class RealESRGAN(Inferencer):
 
     Args:
         identifier (str): Model identifier, e.g., "x4plus"".
-        size (int): Input image size for the model. Default is 512. must be a multiple of 4.
+        size (int): Input image size for the model. only 128 is supported now.
     """
 
     def __init__(self,
