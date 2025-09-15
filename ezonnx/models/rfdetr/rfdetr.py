@@ -8,7 +8,7 @@ from ...ops.preprocess import standard_preprocess, image_from_path, resize_with_
 from ...ops.postprocess import sigmoid,box_cxcywh_to_xyxy_numpy,xywh2xyxy
 
 class RFDETR(Inferencer):
-    """RFDETR ONNX model for object detection.
+    """RF-DETR ONNX model for object detection.
 
     Args:
         identifier (str): Model identifier, e.g., "n","s","m".
