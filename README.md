@@ -95,6 +95,8 @@ Find more notebook samples in the [examples/](examples/) folder.
 - [Object Detection](examples/object_detection.ipynb)
 - [Image Processing](examples/image_processing.ipynb)
 - [Segmentation](examples/segmentation.ipynb)
+- [OCR](examples/ocr.ipynb)
+- [Image Matching](examples/image_matching.ipynb)
 
 ---
 
