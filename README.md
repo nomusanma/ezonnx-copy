@@ -90,10 +90,11 @@ Find more notebook samples in the [examples/](examples/) folder.
 
 ## 📚 Examples
 
-- [examples/feature_extraction.ipynb](examples/feature_extraction.ipynb)
-- [examples/object_detection.ipynb](examples/object_detection.ipynb)
-- [examples/image_processing.ipynb](examples/image_processing.ipynb)
-- [examples/segmentation.ipynb](examples/segmentation.ipynb)
+- [Image Classification](examples/image_classification.ipynb)
+- [Feature Extraction](examples/feature_extraction.ipynb)
+- [Object Detection](examples/object_detection.ipynb)
+- [Image Processing](examples/image_processing.ipynb)
+- [Segmentation](examples/segmentation.ipynb)
 
 ---
 
