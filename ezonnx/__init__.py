@@ -17,6 +17,7 @@ from ezonnx.models.dfine.dfine_hf import DFINE
 from ezonnx.models.rtmdet.rtmdet import RTMDet
 from ezonnx.models.yolo.det import YOLO
 from ezonnx.models.yolo.seg import YOLOSeg
+from ezonnx.models.yolo.obb import YOLOOBB
 #pose
 from ezonnx.models.rtmpose.rtmpose import RTMPose
 from ezonnx.models.vitpose.vitpose import ViTPose
