@@ -17,42 +17,43 @@ print(res.visualized_img)         # visualized image
 print(res.class_token, res.patch_tokens)
 ```
 
-## 📦 Model Collection
-- OCR
+## 📦 Models & Sample Notebooks
+- [OCR](examples/object_detection.ipynb)
     - PPOCRv5
-- Image classification  
-    - ImageClassifier (ConvNeXt,ViT,EfficientNetV2,CoAtNet and others.)
-    - SigLIP2 (zero-shot classification)
-- Object detection
+- [Image classification](examples/image_classification.ipynb)  
+    - ImageClassifier(ConvNeXt,ViT,EfficientNetV2,CoAtNet and others.)
+    - SigLIP2  (zero-shot classification)
+- [Object detection](examples/object_detection.ipynb)
     - YOLOv8, YOLO11
+    - YOLO-OBB (v8,11)
     - RF-DETR
     - D-FINE
     - RTMDet (Person detection)
-- Segmentation
+- [Segmentation](examples/segmentation.ipynb)
     - SAM2.1
     - YOLOv8-seg,YOLO11-seg
-- Feature extraction
+- [Feature extraction](examples/feature_extraction.ipynb)
     - DINOv2, DINOv3
     - SigLIP2
-- Person pose estimation
+- [Person pose estimation](examples/object_detection.ipynb)
     - DWPose (whole body)
     - RTMPose (17pts and whole body)
     - ViTPose+ (17pt)
     - RTMO (multi person pose estimation)
     - RTMW (whole body)
     - MotionBERT 3d (3d pose estimation)
-- Depth estimation
+- [Depth estimation](examples/image_processing.ipynb)
     - DepthAnythingV2
-- Background removal
+- [Background removal](examples/image_processing.ipynb)
     - RMBG1.4
     - ORMBG
-- Image inpainting
+- [Image inpainting](examples/image_processing.ipynb)
     - LaMa
-- Optical flow
+- [Optical flow](examples/image_processing.ipynb)
     - NeuFlowV2
-- Super resolution
+- [Super resolution](examples/image_processing.ipynb)
     - Real-ESRGAN
-- Image matching
+- [Image matching](examples/image_matching.ipynb)
     - ALIKED LightGlue
 ---
 

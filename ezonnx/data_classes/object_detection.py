@@ -15,7 +15,7 @@ class ObjectDetectionResult(Result):
         scores (np.ndarray): List of confidence scores corresponding to each box. Default
         visualized_img (np.ndarray): Processed image with bounding boxes drawn.
     """
-    boxes: np.ndarray # (N, 4)
+    boxes: np.ndarray # (N, 4) or (N, 8) for OBB
     classes: np.ndarray # (N,)
     scores: np.ndarray # (N,)
 
@@ -28,6 +28,50 @@ class ObjectDetectionResult(Result):
         return draw_boxes(self.original_img,
                         self.boxes, self.classes,self.scores,
                         draw_labels=True)
+
+class OBBResult(ObjectDetectionResult):
+    """Data class for segmentation results.
+
+    Attributes:
+        original_img (np.ndarray): Original input image in shape (H, W, 3). BGR
+        boxes (np.ndarray): List of bounding boxes for each object in shape (8,). Default is None.
+        classes (np.ndarray): List of class ids corresponding to each box. Default is None.
+        scores (np.ndarray): List of confidence scores corresponding to each box. Default
+        visualized_img (np.ndarray): Processed image with bounding boxes drawn.
+    """
+    angles: np.ndarray # (N,) range [-π/4, 3π/4]
+    def _visualize(self) -> np.ndarray:
+        """Get the processed image with segmentation masks applied.
+
+        Returns:
+            np.ndarray: Processed image in shape (H, W, 3). BGR
+        """
+        img = self.original_img.copy()
+        line_width = max(2, int(min(img.shape[0], img.shape[1]) / 300))
+        for box,cls,score,angle in zip(self.boxes,self.classes,self.scores,self.angles):
+            # x1, y1, x2, y2, x3, y3, x4, y4 = box
+            label_str = f"{cls} {score*100:.0f}%"
+            color = COLORS[cls%100]
+            pts = box.reshape(-1, 2).astype(int)
+            cv2.polylines(img, [pts], isClosed=True, color=color, thickness=line_width)
+            
+            # if draw angle line
+            # center = np.mean(pts, axis=0).astype(int)
+            # length = int(np.linalg.norm(pts[0]-pts[2])/2)
+            # angle_rad = angle + np.pi/2
+            # x2 = int(center[0] + length * np.cos(angle_rad))
+            # y2 = int(center[1] + length * np.sin(angle_rad))
+            # cv2.line(img, tuple(center), (x2, y2), color, thickness=line_width)
+
+            # if put label
+            # Draw label background
+            # (text_width, text_height), baseline = cv2.getTextSize(label_str, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 1)
+            # cv2.rectangle(img, (pts[0][0], pts[0][1] - text_height - baseline), 
+            #               (pts[0][0] + text_width, pts[0][1]), color, -1)
+            # # Put label text
+            # cv2.putText(img, label_str, (pts[0][0], pts[0][1] - baseline), 
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 1)
+        return img
     
 class InstanceSegmentationResult(Result):
     """Data class for segmentation results.
