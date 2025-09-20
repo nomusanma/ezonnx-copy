@@ -18,7 +18,7 @@ print(res.class_token, res.patch_tokens)
 ```
 
 ## 📦 Models & Sample Notebooks
-- [OCR](examples/object_detection.ipynb)
+- [OCR](examples/ocr.ipynb)
     - PPOCRv5
 - [Image classification](examples/image_classification.ipynb)  
     - ImageClassifier(ConvNeXt,ViT,EfficientNetV2,CoAtNet and others.)
