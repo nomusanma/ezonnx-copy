@@ -91,6 +91,33 @@ def resize_with_aspect_ratio(image:np.ndarray,
 
     return padded_image, ratio
 
+def letterbox(image: np.ndarray,
+                   size: int,
+                   interpolation: int = cv2.INTER_LINEAR,
+                   fill: Tuple[int,int,int] = (0,0,0)
+                   ) -> Tuple[np.ndarray, float]:
+    """
+    単一パスでリサイズ+パディング（レターボックス）。中間画像を作らずwarpAffineで直接描画。
+    Returns: padded_image, ratio, (x_offset, y_offset)
+    """
+    h, w = image.shape[:2]
+    ratio = min(size / w, size / h)
+    new_w = max(1, int(w * ratio))
+    new_h = max(1, int(h * ratio))
+
+    # 変換行列（拡大縮小 + 平行移動）
+    M = np.array([[ratio, 0, 0],
+                  [0, ratio, 0]], dtype=np.float32)
+
+    # 出力を先に確保し、warpAffineで直接書き込み（中間画像なし）
+    padded = np.full((size, size, image.shape[2] if image.ndim == 3 else 1),
+                     fill, dtype=image.dtype)
+    cv2.warpAffine(image, M, (size, size),
+                   dst=padded,
+                   flags=interpolation,
+                   borderMode=cv2.BORDER_CONSTANT,
+                   borderValue=fill)
+    return padded, ratio
 
 # Convert COCO keypoints to H36M keypoints-------------------------
 h36m_coco_order = [9, 11, 14, 12, 15, 13, 16, 4, 1, 5, 2, 6, 3]
