@@ -42,6 +42,8 @@ print(res.class_token, res.patch_tokens)
     - RTMO (multi person pose estimation)
     - RTMW (whole body)
     - MotionBERT 3d (3d pose estimation)
+- [Face recognition](examples/face_recognition.ipynb)
+    - YuNet (face and landmark detection)
 - [Depth estimation](examples/image_processing.ipynb)
     - DepthAnythingV2
 - [Background removal](examples/image_processing.ipynb)
