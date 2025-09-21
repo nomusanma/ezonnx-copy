@@ -139,6 +139,14 @@ def xywh2xyxy(box: np.ndarray) -> np.ndarray:
     box_xyxy[..., 3] = box[..., 1] + box[..., 3] / 2
     return box_xyxy
 
+def xlylwh2xyxy(box: np.ndarray) -> np.ndarray:
+    box_xyxy = box.copy()
+    box_xyxy[..., 0] = box[..., 0]
+    box_xyxy[..., 1] = box[..., 1]
+    box_xyxy[..., 2] = box[..., 0] + box[..., 2]
+    box_xyxy[..., 3] = box[..., 1] + box[..., 3]
+    return box_xyxy
+
 def box_cxcywh_to_xyxy_numpy(x):
     x_c, y_c, w, h = np.split(x, 4, axis=-1)
     b = np.concatenate([
