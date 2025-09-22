@@ -1,5 +1,6 @@
 # EZONNX
-
+Python library to handle state-of-the-arts models with simple and unified API.  
+Runs with onnxruntime, no pytorch and no tensorflow are required.
 
 <div align="center"><img src=./assets/top.jpg  width=640/> </div>
 <br>
