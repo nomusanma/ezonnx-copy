@@ -35,8 +35,9 @@ class SAM2:
         self.box_coords = {}
         self.point_labels = {}
         self.masks = {}
+        self.scores = {}
 
-    def set_image(self, image: np.ndarray) -> None:
+    def set_image(self, image: Union[np.ndarray,str]) -> None:
         '''Set the input image and extract image embeddings.
         
         Args:
@@ -119,12 +120,14 @@ class SAM2:
         if concat_coords.size == 0:
             mask = np.zeros((self.orig_im_size[0], self.orig_im_size[1]), dtype=np.uint8)
         else:
-            mask, _ = self.decoder(image_embed, high_res_feats_0, high_res_feats_1, concat_coords, concat_labels)
+            mask, score = self.decoder(image_embed, high_res_feats_0, high_res_feats_1, concat_coords, concat_labels)
         self.masks[label_id] = mask
+        self.scores[label_id] = score
 
         return SAMSegmentationResult(
             original_img=self.original_image,
-            masks = self.masks)
+            masks = self.masks,
+            scores= self.scores)
 
     def _merge_points_and_boxes(self, label_id: int) -> Tuple[np.ndarray, np.ndarray]:
         concat_coords = []
@@ -271,7 +274,8 @@ class SAM2Decoder(Inferencer):
 
     def __call__(self, image_embed: np.ndarray,
                  high_res_feats_0: np.ndarray, high_res_feats_1: np.ndarray,
-                 point_coords: np.ndarray, point_labels: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+                 point_coords: np.ndarray, point_labels: np.ndarray
+                 ) -> Tuple[np.ndarray, float]:
 
         inputs = self._preprocess(image_embed, high_res_feats_0, high_res_feats_1, point_coords, point_labels)
 
@@ -306,14 +310,14 @@ class SAM2Decoder(Inferencer):
 
     def _postprocess(self, 
                      outputs: List[np.ndarray]
-                     ) -> Tuple[np.ndarray, np.ndarray]:
+                     ) -> Tuple[np.ndarray, float]:
 
-        scores = outputs[1].squeeze()
+        score = float(outputs[1].squeeze())
         masks = outputs[0]
         masks = masks > self.mask_threshold
         masks = masks.astype(np.uint8).squeeze()
 
-        return masks, scores
+        return masks, score
 
     # def _set_image_size(self, orig_im_size: Tuple[int, int]) -> None:
     #     self.orig_im_size = orig_im_size

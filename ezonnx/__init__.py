@@ -10,6 +10,7 @@ from ezonnx.models.siglip2.siglip2 import Siglip2
 # mask
 from ezonnx.models.rmbg.rmbg import RMBG14
 from ezonnx.models.sam2.sam2 import SAM2, SAM2Encoder, SAM2Decoder
+from ezonnx.models.edgetam.edgetam import EdgeTAM, EdgeTAMEncoder, EdgeTAMDecoder
 from ezonnx.models.ormbg.ormbg import ORMBG
 #det
 from ezonnx.models.rfdetr.rfdetr import RFDETR
