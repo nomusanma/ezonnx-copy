@@ -15,6 +15,7 @@ class SAMSegmentationResult(Result):
     """
     masks: Dict[int,np.ndarray]
     boxes: Optional[List[np.ndarray]] = None
+    scores: Optional[Dict[int,float]] = None
 
     def _visualize(self) -> np.ndarray:
         """Get the processed image with segmentation masks applied.
