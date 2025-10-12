@@ -34,6 +34,7 @@ print(res.class_token, res.patch_tokens)
     - SAM2.1
     - EdgeTAM (SAM2 for mobile)
     - YOLOv8-seg,YOLO11-seg
+    - RF-DETR Seg
 - [Feature extraction](examples/feature_extraction.ipynb)
     - DINOv2, DINOv3
     - SigLIP2

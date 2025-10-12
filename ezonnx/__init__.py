@@ -14,6 +14,7 @@ from ezonnx.models.edgetam.edgetam import EdgeTAM, EdgeTAMEncoder, EdgeTAMDecode
 from ezonnx.models.ormbg.ormbg import ORMBG
 #det
 from ezonnx.models.rfdetr.rfdetr import RFDETR
+from ezonnx.models.rfdetr.rfdetr_seg import RFDETRSeg
 from ezonnx.models.dfine.dfine_hf import DFINE
 from ezonnx.models.rtmdet.rtmdet import RTMDet
 from ezonnx.models.yolo.det import YOLO
