@@ -41,10 +41,10 @@ class PPOCR(Inferencer):
         if onnx_path is None:
             # Initialize model
             repo_id = f"bukuroo/PPOCRv5-ONNX"
-            filename_dict = f"ppocr{identifier.split("-")[0]}_dict.txt"
+            filename_dict = f"ppocr{identifier.split('-')[0]}_dict.txt"
             filename_det = f"ppocr{identifier}-det.onnx"
             filename_rec = f"ppocr{identifier}-rec.onnx"
-            filename_cls = f"ppocr{identifier.split("-")[0]}-cls.onnx"
+            filename_cls = f"ppocr{identifier.split('-')[0]}-cls.onnx"
             self.sess_det = self._download_and_compile(repo_id, filename_det)
             self.sess_rec = self._download_and_compile(repo_id, filename_rec)
             self.sess_cls = self._download_and_compile(repo_id, filename_cls)
