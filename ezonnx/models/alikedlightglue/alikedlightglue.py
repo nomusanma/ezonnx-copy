@@ -242,29 +242,21 @@ class ALIKEDLightGlue:
 
 
 class ALIKED(Inferencer):
-    """ALIKED ONNX model for local feature detection and description.
-
-    Args:
-        identifier (str): Model identifier, e.g., "s", "m", "l", "x".
-        threshold (float): Confidence threshold for filtering detections. Default is 0.2.
-        size (int): Input image size for the model. Default is 640. must be 640 or 1280
-    """
-
-    def __init__(self,
-                 identifier,
-                 threshold:float=0.2,
-                 size=640):
-        self._check_backbone(identifier,
-                             ["16rot-top1k",
-                              "16rot-top2k",
-                              "32-top2k"])
-        # Initialize model
-        repo_id = f"bukuroo/ALIKED-LightGlue-ONNX"
-        filename = f"aliked-n{identifier}-{size}.onnx"
-        self.sess = self._download_and_compile(repo_id, filename)
-        self.input_name = self.sess.get_inputs()[0].name
-        self.input_shape = self.sess.get_inputs()[0].shape[2:]
+    def __init__(self, identifier=None, threshold: float = 0.2, size=640, model_path=None):
+        # モデルパスが指定されていればローカルファイルを使う
+        if model_path is not None:
+            self.sess = ort.InferenceSession(model_path)
+        else:
+            self._check_backbone(identifier, ["16rot-top1k", "16rot-top2k", "32-top2k"])
+            repo_id = "bfukuroo/ALIKED-LightGlue-ONNX"
+            filename = f"aliked-{identifier}-{size}.onnx"
+            self.sess = self._download_and_compile(repo_id, filename)
+            self.input_name = self.sess.get_inputs()[0].name
+            self.input_shape = self.sess.get_inputs()[0].shape[2:]
         self.threshold = threshold
+
+
+    
 
     def __call__(self,image:Union[str, np.ndarray])-> KeypointDetectionResult:
         """Run inference on the input image.
