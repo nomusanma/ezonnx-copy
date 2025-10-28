@@ -251,12 +251,9 @@ class ALIKED(Inferencer):
             repo_id = "bfukuroo/ALIKED-LightGlue-ONNX"
             filename = f"aliked-{identifier}-{size}.onnx"
             self.sess = self._download_and_compile(repo_id, filename)
-            self.input_name = self.sess.get_inputs()[0].name
-            self.input_shape = self.sess.get_inputs()[0].shape[2:]
+        self.input_name = self.sess.get_inputs()[0].name
+        self.input_shape = self.sess.get_inputs()[0].shape[2:]
         self.threshold = threshold
-
-
-    
 
     def __call__(self,image:Union[str, np.ndarray])-> KeypointDetectionResult:
         """Run inference on the input image.
